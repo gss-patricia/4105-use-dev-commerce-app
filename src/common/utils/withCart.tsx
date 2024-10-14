@@ -14,7 +14,6 @@ function WithCart<P extends CartProps>(
 
     // Sincronizar localStorage sempre que cartItems mudar
     useEffect(() => {
-      console.log("adicionou");
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }, [cartItems]);
 
