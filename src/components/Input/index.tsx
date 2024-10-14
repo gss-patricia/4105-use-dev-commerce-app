@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode } from "react";
 import Styles from "./Input.module.css";
 
-type InputProps = {
+export type InputProps = {
   icon?: ReactNode;
   variant?: "primary" | "secondary";
   placeholder?: string;
