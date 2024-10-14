@@ -21,20 +21,16 @@ const Input = ({
   style,
   type = "text",
   ...props
-}: InputProps) => {
-  return (
-    <div className={`${Styles.inputContainer} ${Styles[variant]}`}>
-      <input
-        type={type}
-        style={style}
-        {...props}
-        onChange={() => onChange}
-        id={id}
-        placeholder={placeholder}
-      />
-      {!!icon && <span className={Styles.iconContainer}>{icon}</span>}
-    </div>
-  );
-};
+}: InputProps) => (
+  <input
+    type={type}
+    style={style}
+    className={Styles[variant]}
+    {...props}
+    onChange={onChange}
+    id={id}
+    placeholder={placeholder}
+  />
+);
 
 export default Input;
