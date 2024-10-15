@@ -11,6 +11,8 @@ import useFetch from "../../common/hooks/useFetch";
 import { useFetchProducts } from "../../common/hooks/useFetchProducts";
 import { ProductService } from "../../common/services/productService";
 import { useMemo } from "react";
+import { CategoryService } from "../../common/services/categoryService";
+import { useFetchCategories } from "../../common/hooks/useFetchCategories";
 
 function HomePage() {
   const handleSubscribe = (email: string) => {
@@ -18,11 +20,12 @@ function HomePage() {
   };
 
   // Fetch de categorias
+  const categoryService = useMemo(() => CategoryService(), []);
   const {
-    data: categoriesData,
+    categories,
     isLoading: isLoadingCategories,
     error: categoriesError,
-  } = useFetch<{ categories: Category[] }>(CATEGORIES_BASE_URL);
+  } = useFetchCategories(categoryService);
 
   // Fetch de produtos
   const productService = useMemo(() => ProductService(), []); // Instancia o serviço de produto
@@ -48,9 +51,7 @@ function HomePage() {
       </HeroBanner>
       <main className="container">
         <StatusHandler isLoading={isLoadingCategories} error={categoriesError}>
-          {categoriesData && (
-            <Categories categories={categoriesData.categories} />
-          )}
+          {categories && <Categories categories={categories} />}
         </StatusHandler>
 
         <StatusHandler isLoading={isLoadingProducts} error={productsError}>
