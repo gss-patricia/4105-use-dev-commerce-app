@@ -1,31 +1,20 @@
-import { CSSProperties, MouseEvent, ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 import classnames from "classnames"; // Para combinar classes dinamicamente
 import Styles from "./Button.module.css";
 
-type ButtonProps = {
-  style?: CSSProperties;
+export type ButtonProps = {
   children?: ReactNode;
-  text?: string;
-  icon?: ReactNode;
   variant?: "primary" | "secondary";
   size?: "small" | "medium" | "large"; // Define diferentes tamanhos
-  onClick: (e: MouseEvent<HTMLElement>) => void;
-};
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({
   children,
   variant = "primary",
   size = "medium",
-  style,
-  onClick,
   ...props
 }: ButtonProps) => (
-  <button
-    className={classnames(Styles[variant], Styles[size])}
-    onClick={onClick}
-    style={style}
-    {...props}
-  >
+  <button className={classnames(Styles[variant], Styles[size])} {...props}>
     {children}
   </button>
 );
