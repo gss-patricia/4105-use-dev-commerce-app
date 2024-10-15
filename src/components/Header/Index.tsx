@@ -7,8 +7,8 @@ import { PerfilIcon } from "../../common/icons/PerfilIcon";
 import { SearchIcon } from "../../common/icons/SearchIcon";
 import { Link } from "react-router-dom";
 import Typography from "../Typography";
-import Button from "../Button";
 import IconInput from "../IconInput";
+import IconButton from "../IconButton";
 
 type HeaderProps = {
   cartCount: number;
@@ -50,15 +50,14 @@ const Header = ({ cartCount, onSearch }: HeaderProps) => {
               value={query}
               onChange={handleInputChange}
               placeholder="O que você procura?"
-              icon={<SearchIcon />}
             >
-              <Button
-                style={{ position: "relative", right: "36px" }}
+              <IconButton
                 variant="secondary"
                 onClick={handleSearch}
+                style={{ position: "relative", right: "36px" }}
               >
                 <SearchIcon />
-              </Button>
+              </IconButton>
             </IconInput>
           </div>
           <div className={Styles.userActions}>

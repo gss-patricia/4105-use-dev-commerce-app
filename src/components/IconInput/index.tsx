@@ -13,7 +13,7 @@ const IconInput = ({
 }: IconInputProps) => (
   <div className={Styles.iconInputContainer}>
     <Input variant={variant} {...props} />
-    <div className={Styles.iconContainer}> {children}</div>
+    {children && <div className={Styles.iconContainer}> {children}</div>}
   </div>
 );
 
