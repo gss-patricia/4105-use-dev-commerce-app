@@ -2,11 +2,17 @@ import Styles from "./ProductList.module.css";
 import Card from "../Card";
 import Typography from "../Typography";
 import { Link } from "react-router-dom";
-import { Product } from "../../common/types/product";
+
+type ProductListItem = {
+  id: number;
+  label: string;
+  price: number;
+  imageSrc: string;
+};
 
 type ProductListProps = {
   title: string;
-  products: Product[];
+  products: ProductListItem[];
 };
 
 const ProductList = ({ title, products }: ProductListProps) => {
