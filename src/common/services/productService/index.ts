@@ -1,5 +1,5 @@
 // services/productService.ts
-import { IHttp } from "../../lib/httpClient/http.interface";
+import { IHttp } from "../../interfaces/http.interface";
 import { PRODUCTS_BASE_URL } from "../../constants/endpoints";
 import { Product } from "../../types/product";
 import Http from "../../lib/httpClient";

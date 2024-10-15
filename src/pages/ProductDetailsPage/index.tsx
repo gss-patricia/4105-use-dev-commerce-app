@@ -7,6 +7,9 @@ import { PRODUCTS_BASE_URL } from "../../common/constants/endpoints";
 import { Product } from "../../common/types/product";
 import StatusHandler from "../../common/utils/statusHandler";
 import SimpleBanner from "../../components/SimpleBanner";
+import { useMemo } from "react";
+import { ProductDetailService } from "../../common/services/productDetailsService";
+import { useFetchProductDetail } from "../../common/hooks/useFetchProductDetails";
 
 type ProductDetailsPageProps = {
   addToCart: (product: Product) => void;
@@ -15,15 +18,10 @@ type ProductDetailsPageProps = {
 function ProductDetailsPage({ addToCart }: ProductDetailsPageProps) {
   const { id } = useParams<{ id: string }>(); // Pega o ID da URL
 
-  const {
-    data: productData,
-    isLoading = true,
-    error = null,
-  } = useFetch<{ products: Product[] }>(PRODUCTS_BASE_URL);
-
-  // Encontrar o produto com base no ID
-  const product = productData?.products.find(
-    (product) => product.id.toString() === id
+  const productDetailService = useMemo(() => ProductDetailService(), []);
+  const { productDetail, isLoading, error } = useFetchProductDetail(
+    id || "",
+    productDetailService
   );
 
   return (
@@ -35,14 +33,14 @@ function ProductDetailsPage({ addToCart }: ProductDetailsPageProps) {
             <Typography variant="h4">Detalhes do Produto</Typography>
 
             <StatusHandler isLoading={isLoading} error={error}>
-              {product ? (
+              {productDetail ? (
                 <ProductDetail
-                  id={product.id}
-                  title={product.label}
-                  description={product.description}
-                  price={product.price}
-                  imageUrl={product.imageSrc}
-                  colors={product.colors}
+                  id={productDetail.id}
+                  title={productDetail.label}
+                  description={productDetail.description}
+                  price={productDetail.price}
+                  imageUrl={productDetail.imageSrc}
+                  colors={productDetail.colors}
                   addToCart={addToCart}
                 />
               ) : (

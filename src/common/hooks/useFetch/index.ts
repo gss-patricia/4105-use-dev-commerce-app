@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Http from "../../lib/httpClient";
-import { IHttp } from "../../lib/httpClient/http.interface";
+import { IHttp } from "../../interfaces/http.interface";
 
 type FetchResult<T> = {
   data: T | null;
