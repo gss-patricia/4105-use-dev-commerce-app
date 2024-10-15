@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-
+import useFetch from "../../common/hooks/useFetch";
 import Styles from "./ProductDetailsPage.module.css";
 import Typography from "../../components/Typography";
 import ProductDetail from "../../components/ProductDetail/ProductDetail";
@@ -16,31 +14,17 @@ type ProductDetailsPageProps = {
 
 function ProductDetailsPage({ addToCart }: ProductDetailsPageProps) {
   const { id } = useParams<{ id: string }>(); // Pega o ID da URL
-  const [product, setProduct] = useState<Product | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Faz a requisição para buscar o produto com base no ID
-    axios
-      .get(PRODUCTS_BASE_URL)
-      .then((response) => {
-        const foundProduct = response.data.products.find(
-          (product: Product) => product.id.toString() === id
-        );
+  const {
+    data: productData,
+    isLoading = true,
+    error = null,
+  } = useFetch<{ products: Product[] }>(PRODUCTS_BASE_URL);
 
-        if (foundProduct) {
-          setProduct(foundProduct);
-        } else {
-          setError("Produto não encontrado.");
-        }
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setError("Erro ao carregar os detalhes do produto.");
-        setIsLoading(false);
-      });
-  }, [id]);
+  // Encontrar o produto com base no ID
+  const product = productData?.products.find(
+    (product) => product.id.toString() === id
+  );
 
   return (
     <>
