@@ -1,3 +1,4 @@
+// App.tsx
 import "./App.css";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -8,6 +9,9 @@ import ScrollToTop from "./common/utils/ScrollToTop";
 import CartPage from "./pages/CartPage";
 import WithCart from "./common/utils/withCart";
 import { CartProps } from "./common/types/cart";
+import { LocalStorageCartService } from "./common/services/localStorageCartService.ts";
+
+const cartStorage = LocalStorageCartService();
 
 function App({ cartItems, cartCount, addToCart, removeFromCart }: CartProps) {
   return (
@@ -15,27 +19,25 @@ function App({ cartItems, cartCount, addToCart, removeFromCart }: CartProps) {
       <ScrollToTop />
       <Header onSearch={() => {}} cartCount={cartCount} />
       <Routes>
-        <>
-          <Route path="/" element={<HomePage />} />
-          <Route
-            path="/produto/:id"
-            element={<ProductDetailsPage addToCart={addToCart} />}
-          />
-          <Route
-            path="/carrinho"
-            element={
-              <CartPage
-                cartItems={cartItems}
-                removeFromCart={removeFromCart}
-                cartCount={cartCount}
-              />
-            }
-          />
-        </>
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/produto/:id"
+          element={<ProductDetailsPage addToCart={addToCart} />}
+        />
+        <Route
+          path="/carrinho"
+          element={
+            <CartPage
+              cartItems={cartItems}
+              removeFromCart={removeFromCart}
+              cartCount={cartCount}
+            />
+          }
+        />
       </Routes>
       <FooterConfig />
     </Router>
   );
 }
 
-export default WithCart(App);
+export default WithCart(App, cartStorage);

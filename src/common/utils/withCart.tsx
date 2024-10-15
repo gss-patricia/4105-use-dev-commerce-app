@@ -1,23 +1,24 @@
+// hoc/WithCart.tsx
 import React, { useState, useEffect } from "react";
 import { Product } from "../types/product";
 import { CartProps } from "../types/cart";
+import { ICartStorage } from "../interfaces/cartStorage.interface";
 
 function WithCart<P extends CartProps>(
-  WrappedComponent: React.ComponentType<P>
+  WrappedComponent: React.ComponentType<P>,
+  cartStorage: ICartStorage // Injetar a dependência aqui
 ) {
   return function WithCartComponent(props: Omit<P, keyof CartProps>) {
     const [cartItems, setCartItems] = useState<Product[]>(() => {
-      // Carregar itens do localStorage
-      const storedItems = localStorage.getItem("cartItems");
-      return storedItems ? JSON.parse(storedItems) : [];
+      // Usar o cartStorage para carregar os itens
+      return cartStorage.loadCartItems();
     });
 
-    // Sincronizar localStorage sempre que cartItems mudar
+    // Sincronizar o armazenamento sempre que cartItems mudar
     useEffect(() => {
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    }, [cartItems]);
+      cartStorage.saveCartItems(cartItems);
+    }, [cartItems, cartStorage]);
 
-    // Adicionar produto ao carrinho
     const addToCart = (product: Product) => {
       const existingProduct = cartItems.find((item) => item.id === product.id);
       if (!existingProduct) {
@@ -27,15 +28,12 @@ function WithCart<P extends CartProps>(
       }
     };
 
-    // Remover produto do carrinho
     const removeFromCart = (id: number) => {
       setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
     };
 
-    // Quantidade de itens no carrinho
     const cartCount = cartItems.length;
 
-    // Forçar re-render do WrappedComponent quando o cartItems mudar
     return (
       <WrappedComponent
         {...(props as P)}
